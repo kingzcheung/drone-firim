@@ -6,7 +6,7 @@
 
 ```yaml
 - name: publish firim
-  image: bbking/drone-aliyun-oss
+  image: bbking/drone-firim
   settings:
       type: android
       bundle_id: com.google.android.....
