@@ -8,7 +8,7 @@ import (
 	"os"
 )
 
-var Version = "0.0.1"
+var Version = "0.0.2"
 
 func main() {
 	app := cli.NewApp()
@@ -58,6 +58,16 @@ func main() {
 			Usage:  "Build 号（上传 ICON 时不需要）",
 			EnvVar: "PLUGIN_BUILD",
 		},
+		cli.StringFlag{
+			Name:   "app.release_type",
+			Usage:  "打包类型，只针对 iOS (Adhoc, Inhouse)（上传 ICON 时不需要）",
+			EnvVar: "PLUGIN_RELEASE_TYPE",
+		},
+		cli.StringFlag{
+			Name:   "app.changelog",
+			Usage:  "更新日志（上传 ICON 时不需要）",
+			EnvVar: "PLUGIN_CHANGELOG",
+		},
 	}
 	app.Action = run
 
@@ -76,13 +86,15 @@ func run(c *cli.Context) {
 			c.String("app.name"),
 			c.String("app.version"),
 			c.String("app.build"),
+			c.String("app.release_type"),
+			c.String("app.changelog"),
 		),
 	}
 
 	err := plugin.Firim.Exec()
 
 	if err != nil {
-		fmt.Println(err)
+		log.Fatalln(err)
 		return
 	}
 

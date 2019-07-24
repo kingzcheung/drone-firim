@@ -25,14 +25,16 @@ type Firim struct {
 }
 
 type Upload struct {
-	File    string
-	Name    string
-	Version string
-	Build   string
+	File        string
+	Name        string
+	Version     string
+	Build       string
+	ReleaseType string
+	Changelog   string
 }
 
-func NewUpload(file string, name string, version string, build string) *Upload {
-	return &Upload{File: file, Name: name, Version: version, Build: build}
+func NewUpload(file string, name string, version string, build string, releaseType string, changelog string) *Upload {
+	return &Upload{File: file, Name: name, Version: version, Build: build, ReleaseType: releaseType, Changelog: changelog}
 }
 
 type AppsResponse struct {
@@ -53,7 +55,7 @@ type AppsResponse struct {
 	} `json:"cert"`
 }
 
-func NewFirim(appType string, bundleId string, apiToken string, file string, name string, version string, build string) *Firim {
+func NewFirim(appType string, bundleId string, apiToken string, file string, name string, version string, build string, releaseType string, changelog string) *Firim {
 	appType = strings.ToLower(appType)
 
 	if appType != "ios" && appType != "android" {
@@ -65,7 +67,7 @@ func NewFirim(appType string, bundleId string, apiToken string, file string, nam
 		BundleId: bundleId,
 		ApiToken: apiToken,
 		host:     host,
-		upload:   NewUpload(file, name, version, build),
+		upload:   NewUpload(file, name, version, build, releaseType, changelog),
 	}
 }
 
@@ -134,6 +136,15 @@ func (f *Firim) Exec() error {
 		"x:version": f.upload.Version,
 		"x:build":   f.upload.Build,
 	}
+
+	if f.upload.Changelog != "" {
+		extraParams["x:changelog"] = f.upload.Changelog
+	}
+
+	if f.upload.ReleaseType != "" {
+		extraParams["x:release_type"] = f.upload.ReleaseType
+	}
+
 	request, err := fileUploadRequest(apps.Cert.Binary.UploadURL, extraParams, "file", f.upload.File)
 	if err != nil {
 		return err

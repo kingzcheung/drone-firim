@@ -22,11 +22,11 @@
 
 `type`（string）:
 
-上传类型：ios 或者 android
+上传类型：ios 或者 android，必填
 
 `bundle_id`(string):
 
-App 的 bundleId
+App 的 bundleId，必填
 
 `api_token`(string):
 
@@ -34,16 +34,24 @@ App 的 bundleId
 
 `file`(string):
 
-要上传的文件（安装包）地址：一般是当前目录下开始
+要上传的文件（安装包）地址：一般是当前目录下开始，必填
 
 `name`(string):
 
-应用名称
+应用名称，必填
 
 `version`(string):
 
-版本号
+版本号，必填
 
 `build`(string):
 
-Build号
+Build号，必填
+
+`release_type`(string):
+
+打包类型，只针对 iOS,可选
+
+`changelog`(string):
+
+更新日志，可选
